@@ -5,6 +5,7 @@
 #include <system/debug_log.h>
 #include <graphics/renderer_3d.h>
 #include <maths/math_utils.h>
+#include <maths/quaternion.h>
 
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
@@ -27,16 +28,7 @@ void SceneApp::Init()
 
 	b2Vec2 gravity(0.0f, -9.8);
 	world_ = new b2World(gravity);
-
-	// setup the mesh for the player
-	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
-
-	b2BodyDef player_body_def;
-	player_body_def.type = b2_dynamicBody;
-	player_body_def.position = b2Vec2(0.0f, 0.0f);
-
-	player_body_ = world_->CreateBody(&player_body_def);
-
+	
 	b2PolygonShape player_shape;
 	player_shape.SetAsBox(0.5f, 0.5f);
 
@@ -44,7 +36,7 @@ void SceneApp::Init()
 	player_fixture_def.shape = &player_shape;
 	player_fixture_def.density = 1.0f;
 
-	player_body_->CreateFixture(&player_fixture_def);
+	entities.push_back(new Entity(*primitive_builder_, *world_, new gef::Vector4(1, 1, 1, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1), player_fixture_def));
 
 	InitFont();
 	SetupLights();
@@ -76,21 +68,10 @@ bool SceneApp::Update(float frame_time)
 	int32 position_iterations = 2;
 
 	world_->Step(time_step, velecoity_iterations, position_iterations);
-
-
-	gef::Matrix44 player_transform;
-	player_transform.SetIdentity();
 	
-	gef::Matrix44 rotationZ;
-	rotationZ.SetIdentity();
-	rotationZ.RotationZ(player_body_->GetAngle());
+	for (auto it = entities.begin(); it < entities.end(); it++)
+		(*it)->update();
 
-	gef::Matrix44 player_translation;
-	player_translation.SetIdentity();
-	player_translation.SetTranslation(gef::Vector4(player_body_->GetPosition().x, player_body_->GetPosition().y, 0));
-	
-	player_transform = rotationZ * player_translation;
-	player_.set_transform(player_transform);
 	return true;
 }
 
@@ -117,7 +98,13 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
-	renderer_3d_->DrawMesh(player_);
+	for (auto it = entities.begin(); it < entities.end(); it++) {
+		Entity* entity = (*it);
+		const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(entity);
+		renderer_3d_->DrawMesh(*mesh);
+	}
+	//renderer_3d_->DrawMesh(player_);
+	
 	renderer_3d_->set_override_material(NULL);
 
 	renderer_3d_->End();

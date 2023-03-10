@@ -2,10 +2,12 @@
 #define _SCENE_APP_H
 
 #include <system/application.h>
-#include <maths/vector2.h>
+#include <maths/vector4.h>
 #include "primitive_builder.h"
 #include <graphics/mesh_instance.h>
 #include <box2d/box2d.h>
+#include <vector>
+#include <Entity.h>
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -37,12 +39,12 @@ private:
 
 	PrimitiveBuilder* primitive_builder_;
 
-	gef::MeshInstance player_;
-	b2Body* player_body_;
-	
 	b2World* world_;
 
 	float fps_;
+
+	std::vector<Entity*> entities;
+	//std::vector<Entity*> entities;
 };
 
 #endif // _SCENE_APP_H

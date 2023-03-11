@@ -36,7 +36,25 @@ void SceneApp::Init()
 	player_fixture_def.shape = &player_shape;
 	player_fixture_def.density = 1.0f;
 
-	entities.push_back(new Entity(*primitive_builder_, *world_, new gef::Vector4(1, 1, 1, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1), player_fixture_def));
+	//Player
+	Entity* player = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	player->init(player_fixture_def, b2_dynamicBody);
+
+	entities.push_back(player);
+
+	//Ground
+	Entity* ground = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, -2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(10, 1, 1, 1));
+
+	b2PolygonShape shape;
+	shape.SetAsBox(ground->getScale()->x() * 0.5f, ground->getScale()->y() * 0.5f);
+
+	// create the fixture
+	b2FixtureDef fixture_def;
+	fixture_def.shape = &shape;
+
+	ground->init(fixture_def, b2_staticBody);
+
+	entities.push_back(ground);
 
 	InitFont();
 	SetupLights();
@@ -103,7 +121,6 @@ void SceneApp::Render()
 		const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(entity);
 		renderer_3d_->DrawMesh(*mesh);
 	}
-	//renderer_3d_->DrawMesh(player_);
 	
 	renderer_3d_->set_override_material(NULL);
 

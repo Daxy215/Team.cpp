@@ -26,6 +26,8 @@ public: //Getters / Setters
 	gef::Quaternion* getRotation() { return rotation_; }
 	gef::Vector4* getScale() { return scale_; }
 private:
+	void setUserData() { body_->GetUserData().pointer = reinterpret_cast<uintptr_t>(this); }
+private:
 	gef::Vector4* position_, *scale_;
 	gef::Quaternion* rotation_;
 	gef::Matrix44 transform_;

@@ -60,8 +60,7 @@ void SceneApp::Init()
 	SetupLights();
 }
 
-void SceneApp::CleanUp()
-{
+void SceneApp::CleanUp() {
 	CleanUpFont();
 
 	delete primitive_builder_;
@@ -77,8 +76,7 @@ void SceneApp::CleanUp()
 	world_ = NULL;
 }
 
-bool SceneApp::Update(float frame_time)
-{
+bool SceneApp::Update(float frame_time) {
 	fps_ = 1.0f / frame_time;
 	
 	float time_step = 1.0f / 60.0f;
@@ -89,6 +87,37 @@ bool SceneApp::Update(float frame_time)
 	
 	for (auto it = entities.begin(); it < entities.end(); it++)
 		(*it)->update();
+
+	//Collision detection
+	// get the head of the contact list
+	b2Contact* contact = world_->GetContactList();
+	// get contact count
+	int contact_count = world_->GetContactCount();
+
+	for (int contact_num = 0; contact_num < contact_count; ++contact_num) {
+		if (contact->IsTouching()) {
+			// get the colliding bodies
+			b2Body* bodyA = contact->GetFixtureA()->GetBody();
+			b2Body* bodyB = contact->GetFixtureB()->GetBody();
+			
+			// DO COLLISION RESPONSE HERE
+			Entity* entityA = (Entity*)bodyA->GetUserData().pointer;
+
+			//Check if bodyA isn't null
+			if(entityA) {
+				//Do something collision things
+			}
+			
+			Entity* entityB = (Entity*)bodyB->GetUserData().pointer;
+			
+			if(entityB) {
+				
+			}
+		}
+
+		// Get next contact point
+		contact = contact->GetNext();
+	}
 
 	return true;
 }

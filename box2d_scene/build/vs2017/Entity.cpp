@@ -2,6 +2,7 @@
 
 Entity::Entity(PrimitiveBuilder& builder_, b2World& world_,
 	gef::Vector4* position_, gef::Quaternion* rotation_, gef::Vector4* scale_) : builder_(builder_), world_(world_), position_(position_), rotation_(rotation_), scale_(scale_) {
+
 }
 
 Entity::~Entity() {
@@ -35,6 +36,8 @@ void Entity::init(b2BodyType bodyType_) {
 	fixture_def.density = 1.0f;
 
 	body_->CreateFixture(&fixture_def);
+
+	setUserData();
 }
 
 void Entity::init(b2BodyDef body_def) {
@@ -62,6 +65,8 @@ void Entity::init(b2BodyDef body_def, b2FixtureDef fixture_) {
 
 	body_ = world_.CreateBody(&body_def);
 	body_->CreateFixture(&fixture_);
+
+	setUserData();
 }
 
 void Entity::update() {

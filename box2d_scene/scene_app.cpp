@@ -11,7 +11,7 @@
 #include <Player.h>
 
 //Checks if a class is instance of. For example, "Player" can be,
-//an instance of Entity as it,inherites from "Entity".
+//an instance of Entity as it, inherits from "Entity".
 //Usuage ex: isInstance(entity, Player);
 #define isInstance(ptr, clazz) (dynamic_cast<const clazz*>(ptr) != NULL)
 

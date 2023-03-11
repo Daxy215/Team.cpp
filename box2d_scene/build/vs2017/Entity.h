@@ -13,7 +13,11 @@ public:
 
 	~Entity();
 
-	void update();
+	virtual void update() {
+		updatePhysics();
+	}
+
+	void updatePhysics();
 
 	gef::Matrix44 getTransform() { return transform_; }
 public:

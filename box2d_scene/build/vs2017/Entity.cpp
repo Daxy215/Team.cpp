@@ -69,7 +69,7 @@ void Entity::init(b2BodyDef body_def, b2FixtureDef fixture_) {
 	setUserData();
 }
 
-void Entity::update() {
+void Entity::updatePhysics() {
 	gef::Matrix44 player_transform;
 	player_transform.SetIdentity();
 

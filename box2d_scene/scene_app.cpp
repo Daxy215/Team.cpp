@@ -1,4 +1,5 @@
 #include "scene_app.h"
+
 #include <system/platform.h>
 #include <graphics/sprite_renderer.h>
 #include <graphics/font.h>
@@ -7,17 +8,23 @@
 #include <maths/math_utils.h>
 #include <maths/quaternion.h>
 
+#include <Player.h>
+
+//Checks if a class is instance of. For example, "Player" can be,
+//an instance of Entity as it,inherites from "Entity".
+//Usuage ex: isInstance(entity, Player);
+#define isInstance(ptr, clazz) (dynamic_cast<const clazz*>(ptr) != NULL)
+
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
-	font_(NULL)
-{
+	font_(NULL) {
+
 }
 
-void SceneApp::Init()
-{
+void SceneApp::Init() {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
 	// create the renderer for draw 3D geometry
@@ -37,7 +44,7 @@ void SceneApp::Init()
 	player_fixture_def.density = 1.0f;
 
 	//Player
-	Entity* player = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	Player* player = new Player(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 	player->init(player_fixture_def, b2_dynamicBody);
 
 	entities.push_back(player);
@@ -102,16 +109,24 @@ bool SceneApp::Update(float frame_time) {
 			
 			// DO COLLISION RESPONSE HERE
 			Entity* entityA = (Entity*)bodyA->GetUserData().pointer;
+			Entity* entityB = (Entity*)bodyB->GetUserData().pointer;
 
 			//Check if bodyA isn't null
 			if(entityA) {
-				//Do something collision things
+				//Check if entityA is a player.
+				if (isInstance(entityA, Player)) {
+					Player* player = dynamic_cast<Player*>(entityA);
+
+					player->damage();
+				}
 			}
 			
-			Entity* entityB = (Entity*)bodyB->GetUserData().pointer;
-			
 			if(entityB) {
-				
+				if (isInstance(entityB, Player)) {
+					Player* player = dynamic_cast<Player*>(entityB);
+
+					player->damage();
+				}
 			}
 		}
 

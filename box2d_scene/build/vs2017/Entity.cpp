@@ -70,17 +70,17 @@ void Entity::init(b2BodyDef body_def, b2FixtureDef fixture_) {
 }
 
 void Entity::updatePhysics() {
-	gef::Matrix44 player_transform;
-	player_transform.SetIdentity();
+	gef::Matrix44 transform;
+	transform.SetIdentity();
 
 	gef::Matrix44 rotationZ;
 	rotationZ.SetIdentity();
 	rotationZ.RotationZ(body_->GetAngle());
 
-	gef::Matrix44 player_translation;
-	player_translation.SetIdentity();
-	player_translation.SetTranslation(gef::Vector4(body_->GetPosition().x, body_->GetPosition().y, 0));
+	gef::Matrix44 translation;
+	translation.SetIdentity();
+	translation.SetTranslation(gef::Vector4(body_->GetPosition().x, body_->GetPosition().y, 0));
 
-	player_transform = rotationZ * player_translation;
-	set_transform(player_transform);
+	transform = rotationZ * translation;
+	set_transform(transform);
 }

@@ -4,6 +4,7 @@
 
 void Player::update() {
 	//TODO: Handler input system here
+	updatePhysics();
 }
 
 void Player::damage() {

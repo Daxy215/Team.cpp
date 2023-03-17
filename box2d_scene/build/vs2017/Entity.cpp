@@ -29,7 +29,7 @@ void Entity::init(b2BodyType bodyType_) {
 	body_ = world_.CreateBody(&body_def);
 
 	b2PolygonShape shape;
-	shape.SetAsBox(scale_->x() * 0.5f, scale_->y() * 0.5f);
+	shape.SetAsBox(size.x(), size.y());
 
 	b2FixtureDef fixture_def;
 	fixture_def.shape = &shape;

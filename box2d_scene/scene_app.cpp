@@ -46,8 +46,16 @@ void SceneApp::Init() {
 	//Player
 	Player* player = new Player(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 	player->init(player_fixture_def, b2_dynamicBody);
-
+	
 	entities.push_back(player);
+
+	//Other entity(for collision testing)
+	for (int i = 0; i < 4; i++) {
+		Entity* entity = new Entity(*primitive_builder_, *world_, new gef::Vector4(-2 + i, 1, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+		entity->init(player_fixture_def, b2_dynamicBody);
+
+		entities.push_back(entity);
+	}
 
 	//Ground
 	Entity* ground = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, -2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(10, 1, 1, 1));
@@ -78,6 +86,9 @@ void SceneApp::CleanUp() {
 
 	delete sprite_renderer_;
 	sprite_renderer_ = NULL;
+
+	delete input_manager_;
+	input_manager_ = NULL;
 	
 	delete world_;
 	world_ = NULL;
@@ -90,10 +101,16 @@ bool SceneApp::Update(float frame_time) {
 	int32 velecoity_iterations = 6;
 	int32 position_iterations = 2;
 
+	if (input_manager_)
+		input_manager_->Update();
+	
 	world_->Step(time_step, velecoity_iterations, position_iterations);
 	
-	for (auto it = entities.begin(); it < entities.end(); it++)
+	for (auto it = entities.begin(); it < entities.end(); it++) {
 		(*it)->update();
+
+		//TODO: Call processInput(NULL, input_manager_->keyboard);
+	}
 
 	//Collision detection
 	// get the head of the contact list
@@ -137,8 +154,7 @@ bool SceneApp::Update(float frame_time) {
 	return true;
 }
 
-void SceneApp::Render()
-{
+void SceneApp::Render() {
 	// setup camera
 
 	// projection
@@ -149,7 +165,7 @@ void SceneApp::Render()
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(-2.0f, 2.0f, 5.0f);
+	gef::Vector4 camera_eye(0.0f, 2.0f, 10.0f);
 	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;

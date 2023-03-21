@@ -20,8 +20,8 @@ Entity::~Entity() {
 
 void Entity::init(b2BodyType bodyType_) {
 	gef::Vector4 size = (*scale_) * 0.5f;
-	set_mesh(builder_.CreateBoxMesh(size));
-
+	createMesh();
+	
 	b2BodyDef body_def;
 	body_def.type = bodyType_;
 	body_def.position = b2Vec2(position_->x(), position_->y());
@@ -60,8 +60,7 @@ void Entity::init(b2FixtureDef fixture_, b2BodyType bodyType_) {
 }
 
 void Entity::init(b2BodyDef body_def, b2FixtureDef fixture_) {
-	gef::Vector4 size = (*scale_) * 0.5f;
-	set_mesh(builder_.CreateBoxMesh(size));
+	createMesh();
 
 	body_ = world_.CreateBody(&body_def);
 	body_->CreateFixture(&fixture_);

@@ -101,8 +101,7 @@ bool SceneApp::Update(float frame_time) {
 	int32 velecoity_iterations = 6;
 	int32 position_iterations = 2;
 
-	if (input_manager_)
-		input_manager_->Update();
+	//TODO: Update input_manager_
 	
 	world_->Step(time_step, velecoity_iterations, position_iterations);
 	

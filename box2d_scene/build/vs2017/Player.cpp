@@ -9,7 +9,6 @@ void Player::update() {
 }
 
 void Player::processInput(gef::SonyController* controller, gef::Keyboard* keyboard) {
-	
 	//float xaxis = controller->left_stick_x_axis();
 
 	if (keyboard->IsKeyDown(keyboard->KC_D)) {

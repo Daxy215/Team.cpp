@@ -21,8 +21,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
 	font_(NULL),
-	input_manager_(NULL)
-	 {
+	input_manager_(NULL) {
 	
 }
 
@@ -36,6 +35,17 @@ void SceneApp::Init() {
 
 	// initialise primitive builder to make create some 3D geometry easier
 	primitive_builder_ = new PrimitiveBuilder(platform_);
+
+	// load the assets in from the .scn
+	const char* scene_asset_filename = "world.scn";
+	scene_assets_ = LoadSceneAssets(platform_, scene_asset_filename);
+	
+	if (scene_assets_) {
+		gef::DebugOut("loaded\n", scene_asset_filename);
+		mesh_instance_.set_mesh(GetMeshFromSceneAssets(scene_assets_));
+	} else {
+		gef::DebugOut("Scene file %s failed to load\n", scene_asset_filename);
+	}
 
 	b2Vec2 gravity(0.0f, -9.8);
 	world_ = new b2World(gravity);
@@ -53,6 +63,13 @@ void SceneApp::Init() {
 	
 	entities.push_back(player);
 	
+	//Earth
+	Entity* earth = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	earth->init(player_fixture_def, b2_staticBody);
+	earth->set_mesh(mesh_instance_.mesh());
+
+	entities.push_back(earth);
+
 	//Other entity(for collision testing)
 	for (int i = 0; i < 4; i++) {
 		Entity* entity = new Entity(*primitive_builder_, *world_, new gef::Vector4(-2 + i, 1, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
@@ -81,6 +98,9 @@ void SceneApp::Init() {
 
 void SceneApp::CleanUp() {
 	CleanUpFont();
+
+	delete scene_assets_;
+	scene_assets_ = NULL;
 
 	delete primitive_builder_;
 	primitive_builder_ = NULL;
@@ -177,15 +197,15 @@ void SceneApp::Render() {
 	
 	// draw 3d geometry
 	renderer_3d_->Begin();
-
-	renderer_3d_->set_override_material(&primitive_builder_->red_material());
+	
+	//renderer_3d_->set_override_material(&primitive_builder_->red_material());
 	for (auto it = entities.begin(); it < entities.end(); it++) {
 		Entity* entity = (*it);
 		const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(entity);
 		renderer_3d_->DrawMesh(*mesh);
 	}
 	
-	renderer_3d_->set_override_material(NULL);
+	//renderer_3d_->set_override_material(NULL);
 
 	renderer_3d_->End();
 
@@ -229,4 +249,31 @@ void SceneApp::SetupLights()
 	default_point_light.set_colour(gef::Colour(0.7f, 0.7f, 1.0f, 1.0f));
 	default_point_light.set_position(gef::Vector4(-500.0f, 400.0f, 700.0f));
 	default_shader_data.AddPointLight(default_point_light);
+}
+
+gef::Scene* SceneApp::LoadSceneAssets(gef::Platform& platform, const char* filename) {
+	gef::Scene* scene = new gef::Scene();
+
+	if (scene->ReadSceneFromFile(platform, filename)) {
+		// if scene file loads successful
+		// create material and mesh resources from the scene data
+		scene->CreateMaterials(platform);
+		scene->CreateMeshes(platform);
+	} else {
+		delete scene;
+		scene = NULL;
+	}
+
+	return scene;
+}
+
+gef::Mesh* SceneApp::GetMeshFromSceneAssets(gef::Scene* scene) {
+	gef::Mesh* mesh = NULL;
+
+	// if the scene data contains at least one mesh
+	// return the first mesh
+	if (scene && scene->meshes.size() > 0)
+		mesh = scene->meshes.front();
+
+	return mesh;
 }

@@ -6,6 +6,7 @@
 #include "primitive_builder.h"
 #include <graphics/mesh_instance.h>
 #include <box2d/box2d.h>
+#include "graphics/scene.h"
 #include <vector>
 #include <Entity.h>
 
@@ -32,6 +33,8 @@ private:
 	void CleanUpFont();
 	void DrawHUD();
 	void SetupLights();
+	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);
+	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
     
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
@@ -39,6 +42,9 @@ private:
 	gef::InputManager* input_manager_;
 
 	PrimitiveBuilder* primitive_builder_;
+
+	gef::MeshInstance mesh_instance_;
+	gef::Scene* scene_assets_;
 
 	b2World* world_;
 

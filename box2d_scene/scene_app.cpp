@@ -20,12 +20,16 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
-	font_(NULL) {
-
+	font_(NULL),
+	input_manager_(NULL)
+	 {
+	
 }
 
 void SceneApp::Init() {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
+
+	input_manager_ = gef::InputManager::Create(platform_);
 
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
@@ -48,12 +52,12 @@ void SceneApp::Init() {
 	player->init(player_fixture_def, b2_dynamicBody);
 	
 	entities.push_back(player);
-
+	
 	//Other entity(for collision testing)
 	for (int i = 0; i < 4; i++) {
 		Entity* entity = new Entity(*primitive_builder_, *world_, new gef::Vector4(-2 + i, 1, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 		entity->init(player_fixture_def, b2_dynamicBody);
-
+		
 		entities.push_back(entity);
 	}
 
@@ -95,20 +99,20 @@ void SceneApp::CleanUp() {
 }
 
 bool SceneApp::Update(float frame_time) {
+
 	fps_ = 1.0f / frame_time;
 	
 	float time_step = 1.0f / 60.0f;
 	int32 velecoity_iterations = 6;
 	int32 position_iterations = 2;
 
-	//TODO: Update input_manager_
+	input_manager_->Update();
 	
 	world_->Step(time_step, velecoity_iterations, position_iterations);
 	
 	for (auto it = entities.begin(); it < entities.end(); it++) {
 		(*it)->update();
-
-		//TODO: Call processInput(NULL, input_manager_->keyboard);
+		(*it)->processInput(NULL, input_manager_->keyboard());
 	}
 
 	//Collision detection

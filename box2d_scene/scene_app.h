@@ -36,6 +36,7 @@ private:
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
 	gef::Renderer3D* renderer_3d_;
+	gef::InputManager* input_manager_;
 
 	PrimitiveBuilder* primitive_builder_;
 

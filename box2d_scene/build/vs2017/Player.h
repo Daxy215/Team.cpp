@@ -21,6 +21,7 @@ public:
 	//void move(gef::Vector4* P);
 private:
 	float speed = 5;
+
 };
 #endif
 

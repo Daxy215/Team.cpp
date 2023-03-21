@@ -44,7 +44,7 @@ void SceneApp::Init() {
 	player_fixture_def.density = 1.0f;
 
 	//Player
-	Player* player = new Player(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	Player* player = new Player(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 	player->init(player_fixture_def, b2_dynamicBody);
 
 	entities.push_back(player);

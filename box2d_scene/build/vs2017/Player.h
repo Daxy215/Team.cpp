@@ -20,16 +20,21 @@ public:
 
 		: Entity(builder_, world_, position_, rotation_, scale_) {
 
+		
+
 	}
 	
-	gef::InputManager* inputmanager_;
-	gef::Keyboard* keyboard_;
-	gef::SonyController* controller_;
-	gef::TouchInputManager* Mouse_;
+	float velocity = 20;
 
-	virtual void update();
+	float GetXPos();
+	
+	virtual void update(gef::Keyboard* keyboard_ , gef::InputManager* inputmanager_, gef::SonyController* controller_, gef::TouchInputManager* Mouse_);
 	void damage();// { OutputDebugStringA("Player damaged!"); }
+	void move(gef::Vector4* P);
+
 };
+
+
 
 #endif
 

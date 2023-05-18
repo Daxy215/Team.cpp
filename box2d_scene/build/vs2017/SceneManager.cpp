@@ -13,7 +13,8 @@ void SceneManager::addScene(SceneA* scene) {
 }
 
 void SceneManager::loadScene(SceneA* scene) {
-	currentActiveScene->onUnLoad();
+	if(currentActiveScene != nullptr)
+		currentActiveScene->onUnLoad();
 
 	currentActiveScene = scene;
 	

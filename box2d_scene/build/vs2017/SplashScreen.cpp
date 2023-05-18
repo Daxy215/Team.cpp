@@ -8,10 +8,10 @@ void SplashScreen::onUnLoad()
 {
 }
 
-void SplashScreen::render()
+void SplashScreen::update()
 {
 }
 
-void SplashScreen::update()
+void SplashScreen::render()
 {
 }

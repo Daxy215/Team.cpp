@@ -48,15 +48,11 @@ private:
 
 	PrimitiveBuilder* primitive_builder_;
 
-	gef::MeshInstance mesh_instance_;
 	gef::Scene* scene_assets_;
 
 	b2World* world_;
 
 	float fps_;
-
-	std::vector<Entity*> entities;
-	//std::vector<Entity*> entities;
 };
 
 #endif // _SCENE_APP_H

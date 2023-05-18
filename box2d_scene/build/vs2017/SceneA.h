@@ -13,8 +13,8 @@ public:
 
 	virtual void onLoad() {}
 	virtual void onUnLoad() {}
-	virtual void render() {}
 	virtual void update() {}
+	virtual void render() {}
 public:
 	std::string name;
 	std::vector<Entity*> entities;

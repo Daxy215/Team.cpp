@@ -8,6 +8,8 @@
 #include <maths/math_utils.h>
 
 #include <SplashScreen.h>
+#include <MainMenu.h>
+#include <Options.h>
 #include <Level1.h>
 
 //Checks if a class is instance of. For example, "Player" can be,
@@ -38,18 +40,28 @@ void SceneApp::Init() {
 
 	// initialise primitive builder to make create some 3D geometry easier
 	primitive_builder_ = new PrimitiveBuilder(platform_);
-
+	
 	//Create world
 	b2Vec2 gravity(0.0f, -9.8);
 	world_ = new b2World(gravity);
+
+	//To load a texture
+	/*gef::PNGLoader png_loader;
+	gef::ImageData* imageData;
+
+	png_loader.Load("imagePath", platform_, *imageData);
+
+	if (imageData != nullptr) {
+		gef::Texture* texture = gef::Texture::Create(platform_, *imageData);
+	}*/
 
 	InitFont();
 	SetupLights();
 
 	//Create scenes
 	SceneManager::addScene(new SplashScreen("SplashScreen"));
-	SceneManager::addScene(new SceneA("MainMenu"));
-	SceneManager::addScene(new SceneA("OptionsMenu"));
+	SceneManager::addScene(new MainMenu("MainMenu"));
+	SceneManager::addScene(new Options("OptionsMenu", platform_));
 	SceneManager::addScene(new SceneA("Credits"));
 
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));

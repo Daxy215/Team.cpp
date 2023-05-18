@@ -24,6 +24,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	input_manager_(NULL),
 	audio_manager_(NULL) {
 	
+	
 }
 
 void SceneApp::Init() {
@@ -53,14 +54,14 @@ void SceneApp::Init() {
 
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));
 
-	SceneManager::loadScene(SceneManager::scenes[0]); //SplashScreen :)
+	SceneManager::loadScene(SceneManager::scenes[4]); //Change it to '0' later.
 }
 
 void SceneApp::CleanUp() {
 	CleanUpFont();
 
-	delete scene_assets_;
-	scene_assets_ = NULL;
+	//delete scene_assets_;
+	//scene_assets_ = NULL;
 
 	delete primitive_builder_;
 	primitive_builder_ = NULL;
@@ -116,22 +117,22 @@ bool SceneApp::Update(float frame_time) {
 			Entity* entityA = (Entity*)bodyA->GetUserData().pointer;
 			Entity* entityB = (Entity*)bodyB->GetUserData().pointer;
 
-			//Check if bodyA isn't null
-			if(entityA) {
-				//Check if entityA is a player.
-				if (isInstance(entityA, Player)) {
-					Player* player = dynamic_cast<Player*>(entityA);
+			//If either is null then,
+			//a collision check will be pointles,
+			if (!entityA || entityB)
+				continue;
 
-					player->damage();
-				}
+			//Check if entityA is a player.
+			if (isInstance(entityA, Player)) {
+				Player* player = dynamic_cast<Player*>(entityA);
+
+				player->damage();
 			}
 			
-			if(entityB) {
-				if (isInstance(entityB, Player)) {
-					Player* player = dynamic_cast<Player*>(entityB);
+			if (isInstance(entityB, Player)) {
+				Player* player = dynamic_cast<Player*>(entityB);
 
-					player->damage();
-				}
+				player->damage();
 			}
 		}
 
@@ -153,7 +154,7 @@ void SceneApp::Render() {
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(0.0f, 2.0f, 10.0f);
+	gef::Vector4 camera_eye(0.0f, 2.0f, 25.0f);
 	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;

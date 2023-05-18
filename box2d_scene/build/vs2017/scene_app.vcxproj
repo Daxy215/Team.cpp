@@ -215,6 +215,8 @@
     <ClCompile Include="..\..\scene_app.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Level1.cpp" />
+    <ClCompile Include="LevelMaker.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneA.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -225,6 +227,8 @@
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Level1.h" />
+    <ClInclude Include="LevelMaker.h" />
+    <ClInclude Include="Options.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneA.h" />
     <ClInclude Include="SceneManager.h" />

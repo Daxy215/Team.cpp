@@ -3,6 +3,10 @@
 #include <box2d/box2d.h>
 #include <maths/quaternion.h>
 
+#include <system/debug_log.h>
+
+#include <LevelMaker.h>
+
 void Level1::onLoad() {
 	// load the assets in from the .scn
 	/*const char* scene_asset_filename = "world.scn";
@@ -35,27 +39,22 @@ void Level1::onLoad() {
 
 	entities.push_back(earth);
 
-	//Other entity(for collision testing)
-	for (int i = 0; i < 4; i++) {
-		Entity* entity = new Entity(*primitive_builder_, *world_, new gef::Vector4(-2 + i, 1, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
-		entity->init(player_fixture_def, b2_dynamicBody);
+	int map[32][32] = {
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 0, 1, 1, 1, 0, 1 },
+	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	};
 
-		entities.push_back(entity);
+	auto e = LevelMaker::createLevel(map, primitive_builder_, world_);
+
+	for (auto it = e.begin(); it != e.end(); it++) {
+		entities.push_back((*it));
 	}
-
-	//Ground
-	Entity* ground = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, -2, -2, 1), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(10, 1, 1, 1));
-
-	b2PolygonShape shape;
-	shape.SetAsBox(ground->getScale()->x() * 0.5f, ground->getScale()->y() * 0.5f);
-
-	// create the fixture
-	b2FixtureDef fixture_def;
-	fixture_def.shape = &shape;
-
-	ground->init(fixture_def, b2_staticBody);
-
-	entities.push_back(ground);
 }
 
 void Level1::update() {

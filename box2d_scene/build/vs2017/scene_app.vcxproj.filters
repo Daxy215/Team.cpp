@@ -48,6 +48,12 @@
     <ClCompile Include="Level1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="LevelMaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene_app.h">
@@ -72,6 +78,12 @@
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Level1.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelMaker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>

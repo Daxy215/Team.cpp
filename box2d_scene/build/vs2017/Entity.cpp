@@ -69,6 +69,9 @@ void Entity::init(b2BodyDef body_def, b2FixtureDef fixture_) {
 }
 
 void Entity::updatePhysics() {
+	if (body_ == NULL || body_ == nullptr)
+		return;
+
 	gef::Matrix44 transform;
 	transform.SetIdentity();
 

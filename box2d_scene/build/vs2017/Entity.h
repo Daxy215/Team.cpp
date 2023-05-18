@@ -46,7 +46,7 @@ protected:
 	gef::Quaternion* rotation_;
 	gef::Matrix44 transform_;
 
-	b2Body* body_;
+	b2Body* body_ = nullptr;
 
 	PrimitiveBuilder& builder_;
 	b2World& world_;

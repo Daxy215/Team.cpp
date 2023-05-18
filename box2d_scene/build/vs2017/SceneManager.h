@@ -12,7 +12,6 @@ public:
 	static void addScene(SceneA* scene);
 	static void loadScene(SceneA* scene);
 	static void loadScene(std::string sceneName);
-
 public:
 	static std::vector<SceneA*> scenes;
 	static SceneA* currentActiveScene;

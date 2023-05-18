@@ -215,12 +215,18 @@
     <ClCompile Include="..\..\scene_app.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneA.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\primitive_builder.h" />
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneA.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SplashScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

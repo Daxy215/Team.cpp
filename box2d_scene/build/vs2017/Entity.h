@@ -10,7 +10,6 @@
 #include <input/sony_controller_input_manager.h>
 #include <input/input_manager.h>
 
-
 class Entity : public gef::MeshInstance {
 public:
 	Entity(PrimitiveBuilder& builder_, b2World& world_,

@@ -9,6 +9,7 @@
 #include <maths/quaternion.h>
 
 #include <Player.h>
+#include <SplashScreen.h>
 
 //Checks if a class is instance of. For example, "Player" can be,
 //an instance of Entity as it, inherits from "Entity".
@@ -21,7 +22,8 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
 	font_(NULL),
-	input_manager_(NULL) {
+	input_manager_(NULL),
+	audio_manager_(NULL) {
 	
 }
 
@@ -29,6 +31,7 @@ void SceneApp::Init() {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
 	input_manager_ = gef::InputManager::Create(platform_);
+	audio_manager_ = gef::AudioManager::Create();
 
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
@@ -46,7 +49,7 @@ void SceneApp::Init() {
 	} else {
 		gef::DebugOut("Scene file %s failed to load\n", scene_asset_filename);
 	}
-
+	
 	b2Vec2 gravity(0.0f, -9.8);
 	world_ = new b2World(gravity);
 	
@@ -94,6 +97,18 @@ void SceneApp::Init() {
 
 	InitFont();
 	SetupLights();
+
+	//Create scenes
+	SceneManager::addScene(new SplashScreen("SplashScreen"));
+	SceneManager::addScene(new SceneA("MainMenu"));
+	SceneManager::addScene(new SceneA("OptionsMenu"));
+	SceneManager::addScene(new SceneA("Credits"));
+
+	int levels = 1;
+	for(int i = 0; i < levels; i++)
+		SceneManager::addScene(new SceneA("Level " + std::to_string(i)));
+
+	SceneManager::currentActiveScene = SceneManager::scenes[0]; //SplashScreen :)
 }
 
 void SceneApp::CleanUp() {
@@ -114,14 +129,16 @@ void SceneApp::CleanUp() {
 	delete input_manager_;
 	input_manager_ = NULL;
 	
+	delete audio_manager_;
+	audio_manager_ = NULL;
+
 	delete world_;
 	world_ = NULL;
 }
 
 bool SceneApp::Update(float frame_time) {
-
 	fps_ = 1.0f / frame_time;
-	
+
 	float time_step = 1.0f / 60.0f;
 	int32 velecoity_iterations = 6;
 	int32 position_iterations = 2;

@@ -7,8 +7,12 @@
 #include <graphics/mesh_instance.h>
 #include <box2d/box2d.h>
 #include "graphics/scene.h"
+#include <audio/audio_manager.h>
+
 #include <vector>
+
 #include <Entity.h>
+#include <SceneManager.h>
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -35,11 +39,12 @@ private:
 	void SetupLights();
 	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);
 	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
-    
+
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
 	gef::Renderer3D* renderer_3d_;
 	gef::InputManager* input_manager_;
+	gef::AudioManager* audio_manager_;
 
 	PrimitiveBuilder* primitive_builder_;
 

@@ -18,7 +18,6 @@ public:
 	virtual void processInput(gef::SonyController* controller, gef::Keyboard* keyboard);
 	virtual void createMesh();
 	void damage();// { OutputDebugStringA("Player damaged!"); }
-	//void move(gef::Vector4* P);
 private:
 	float speed = 5;
 

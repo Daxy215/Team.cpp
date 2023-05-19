@@ -1,7 +1,7 @@
 #include "Entity.h"
 
-Entity::Entity(PrimitiveBuilder& builder_, b2World& world_,
-	gef::Vector4* position_, gef::Quaternion* rotation_, gef::Vector4* scale_) : builder_(builder_), world_(world_), position_(position_), rotation_(rotation_), scale_(scale_) {
+Entity::Entity(std::string name_, PrimitiveBuilder& builder_, b2World& world_,
+	gef::Vector4* position_, gef::Quaternion* rotation_, gef::Vector4* scale_) : name_(name_), builder_(builder_), world_(world_), position_(position_), rotation_(rotation_), scale_(scale_) {
 
 }
 

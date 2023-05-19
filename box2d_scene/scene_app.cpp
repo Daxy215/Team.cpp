@@ -17,6 +17,8 @@
 //Usuage ex: isInstance(entity, Player);
 #define isInstance(ptr, clazz) (dynamic_cast<const clazz*>(ptr) != NULL)
 
+SceneApp* SceneApp::instance;
+
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
@@ -30,6 +32,8 @@ SceneApp::SceneApp(gef::Platform& platform) :
 }
 
 void SceneApp::Init() {
+	instance = this;
+
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
 	input_manager_ = gef::InputManager::Create(platform_);
@@ -105,10 +109,6 @@ bool SceneApp::Update(float frame_time) {
 	
 	world_->Step(time_step, velecoity_iterations, position_iterations);
 	
-	/*for (auto it = entities.begin(); it < entities.end(); it++) {
-		
-	}*/
-
 	if (SceneManager::currentActiveScene != nullptr) {
 		SceneManager::currentActiveScene->update();
 	}
@@ -131,8 +131,13 @@ bool SceneApp::Update(float frame_time) {
 
 			//If either is null then,
 			//a collision check will be pointles,
-			if (!entityA || entityB)
+			if (!entityA || !entityB)
 				continue;
+
+			
+
+			gef::DebugOut("collding? ");
+			gef::DebugOut(entityA->getName().c_str());
 
 			//Check if entityA is a player.
 			if (isInstance(entityA, Player)) {
@@ -187,8 +192,6 @@ void SceneApp::Render() {
 		SceneManager::currentActiveScene->render();
 	}
 
-	//renderer_3d_->set_override_material(NULL);
-
 	renderer_3d_->End();
 
 	// start drawing sprites, but don't clear the frame buffer
@@ -233,14 +236,14 @@ void SceneApp::SetupLights()
 	default_shader_data.AddPointLight(default_point_light);
 }
 
-gef::Scene* SceneApp::LoadSceneAssets(gef::Platform& platform, const char* filename) {
+gef::Scene* SceneApp::LoadSceneAssets(const char* filename) {
 	gef::Scene* scene = new gef::Scene();
 
-	if (scene->ReadSceneFromFile(platform, filename)) {
+	if (scene->ReadSceneFromFile(platform_, filename)) {
 		// if scene file loads successful
 		// create material and mesh resources from the scene data
-		scene->CreateMaterials(platform);
-		scene->CreateMeshes(platform);
+		scene->CreateMaterials(platform_);
+		scene->CreateMeshes(platform_);
 	} else {
 		delete scene;
 		scene = NULL;

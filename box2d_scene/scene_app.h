@@ -32,14 +32,17 @@ public:
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
+
+	gef::Scene* LoadSceneAssets(const char* filename);
+	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
+public:
+	static SceneApp* instance;
 private:
 	void InitFont();
 	void CleanUpFont();
 	void DrawHUD();
 	void SetupLights();
-	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);
-	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
-
+	
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
 	gef::Renderer3D* renderer_3d_;

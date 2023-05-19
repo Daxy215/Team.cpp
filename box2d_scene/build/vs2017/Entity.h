@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <string>
+
 #include <maths/vector2.h>
 #include "primitive_builder.h"
 #include <graphics/mesh_instance.h>
@@ -12,7 +14,7 @@
 
 class Entity : public gef::MeshInstance {
 public:
-	Entity(PrimitiveBuilder& builder_, b2World& world_,
+	Entity(std::string name_, PrimitiveBuilder& builder_, b2World& world_,
 	gef::Vector4* position_, gef::Quaternion* rotation_, gef::Vector4* scale_);
 
 	~Entity();
@@ -36,12 +38,18 @@ public:
 	void init(b2FixtureDef fixture_, b2BodyType bodyType_);
 	void init(b2BodyDef body_def, b2FixtureDef fixture_);
 public: //Getters / Setters
+	std::string getName() { return name_; }
+	
 	gef::Vector4* getPosition() { return position_; }
+	gef::Vector4* setPosition(gef::Vector4* position_) { this->position_ = position_; }
+
 	gef::Quaternion* getRotation() { return rotation_; }
 	gef::Vector4* getScale() { return scale_; }
 private:
 	void setUserData() { body_->GetUserData().pointer = reinterpret_cast<uintptr_t>(this); }
 protected:
+	std::string name_;
+
 	gef::Vector4* position_, *scale_;
 	gef::Quaternion* rotation_;
 	gef::Matrix44 transform_;

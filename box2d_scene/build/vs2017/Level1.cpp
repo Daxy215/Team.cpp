@@ -8,17 +8,6 @@
 #include <LevelMaker.h>
 
 void Level1::onLoad() {
-	// load the assets in from the .scn
-	/*const char* scene_asset_filename = "world.scn";
-	scene_assets_ = LoadSceneAssets(platform_, scene_asset_filename);
-
-	if (scene_assets_) {
-		gef::DebugOut("loaded\n", scene_asset_filename);
-		mesh_instance_.set_mesh(GetMeshFromSceneAssets(scene_assets_));
-	} else {
-		gef::DebugOut("Scene file %s failed to load\n", scene_asset_filename);
-	}*/
-	
 	b2PolygonShape player_shape;
 	player_shape.SetAsBox(0.5f, 0.5f);
 
@@ -27,31 +16,55 @@ void Level1::onLoad() {
 	player_fixture_def.density = 1.0f;
 
 	//Player
-	Player* player = new Player(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	Player* player = new Player("Player", * primitive_builder_, *world_, new gef::Vector4((-(LevelSizeX / 2) + 1), 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 	player->init(player_fixture_def, b2_dynamicBody);
 
 	entities.push_back(player);
 
 	//Earth
-	Entity* earth = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
-	earth->init(player_fixture_def, b2_staticBody);
+	//Entity* earth = new Entity(*primitive_builder_, *world_, new gef::Vector4(0, 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	//earth->init(player_fixture_def, b2_staticBody);
 	//earth->set_mesh(mesh_instance_.mesh());
 
-	entities.push_back(earth);
-
-	int map[32][32] = {
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 0, 1, 1, 1, 0, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 1 },
+	//entities.push_back(earth);
+	
+	int map[LevelSizeX][LevelSizeY] = {
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 1, 1, 1, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 1, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 1, 0, 1, 1, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
+	{ 1, 0, 0, 0, 0, 0},
 	};
 
-	auto e = LevelMaker::createLevel(map, primitive_builder_, world_);
-
+	auto e = LevelMaker::createLevel(-16, -8, map, primitive_builder_, world_);
+	
 	for (auto it = e.begin(); it != e.end(); it++) {
 		entities.push_back((*it));
 	}

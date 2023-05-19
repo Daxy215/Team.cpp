@@ -22,8 +22,6 @@ public:
 public:
 	Player* player;
 public:
-	gef::MeshInstance mesh_instance_;
-
 	gef::Renderer3D* renderer_3d_;
 	PrimitiveBuilder* primitive_builder_;
 	b2World* world_;

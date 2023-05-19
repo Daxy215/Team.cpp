@@ -213,10 +213,12 @@
     </ClCompile>
     <ClCompile Include="..\..\primitive_builder.cpp" />
     <ClCompile Include="..\..\scene_app.cpp" />
+    <ClCompile Include="Credits.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="LevelMaker.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneA.cpp" />
@@ -226,10 +228,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\primitive_builder.h" />
     <ClInclude Include="..\..\scene_app.h" />
+    <ClInclude Include="Credits.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Level1.h" />
     <ClInclude Include="LevelMaker.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneA.h" />

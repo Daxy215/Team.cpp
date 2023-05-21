@@ -1,5 +1,9 @@
 #include "Entity.h"
 
+#include <MathA.h>
+#include <maths/quaternion.h>
+#include <maths/math_utils.h>
+
 Entity::Entity(std::string name_, PrimitiveBuilder& builder_, b2World& world_,
 	gef::Vector4* position_, gef::Quaternion* rotation_, gef::Vector4* scale_) : name_(name_), builder_(builder_), world_(world_), position_(position_), rotation_(rotation_), scale_(scale_) {
 
@@ -72,17 +76,19 @@ void Entity::updatePhysics() {
 	if (body_ == NULL || body_ == nullptr)
 		return;
 
-	gef::Matrix44 transform;
-	transform.SetIdentity();
+	setPosition(new gef::Vector4(body_->GetPosition().x, body_->GetPosition().y, 0));
+
+	gef::Matrix44 player_transform;
+	player_transform.SetIdentity();
 
 	gef::Matrix44 rotationZ;
 	rotationZ.SetIdentity();
-	rotationZ.RotationZ(body_->GetAngle());
+	rotationZ.RotationZ(rotation_->z);
 
-	gef::Matrix44 translation;
-	translation.SetIdentity();
-	translation.SetTranslation(gef::Vector4(body_->GetPosition().x, body_->GetPosition().y, 0));
+	gef::Matrix44 player_translation;
+	player_translation.SetIdentity();
+	player_translation.SetTranslation(*position_);
 
-	transform = rotationZ * translation;
-	set_transform(transform);
+	player_transform = rotationZ * player_translation;
+	set_transform(player_transform);
 }

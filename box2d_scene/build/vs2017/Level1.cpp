@@ -17,7 +17,13 @@ void Level1::onLoad() {
 
 	//Player
 	Player* player = new Player("Player", * primitive_builder_, *world_, new gef::Vector4((-(LevelSizeX / 2) + 1), 2, -2, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
-	player->init(player_fixture_def, b2_dynamicBody);
+	
+	b2BodyDef body_def;
+	body_def.type = b2_dynamicBody;
+	body_def.position = b2Vec2(player->getPosition()->x(), player->getPosition()->y());
+	body_def.fixedRotation = true;
+
+	player->init(body_def);
 
 	entities.push_back(player);
 
@@ -73,7 +79,7 @@ void Level1::onLoad() {
 void Level1::update() {
 	for (auto it = entities.begin(); it != entities.end(); it++) {
 		(*it)->update();
-		(*it)->processInput(NULL, input_manager_->keyboard());
+		(*it)->processInput(input_manager_);
 	}
 }
 

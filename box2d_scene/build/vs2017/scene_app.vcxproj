@@ -218,6 +218,7 @@
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="LevelMaker.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MathA.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Level1.h" />
     <ClInclude Include="LevelMaker.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MathA.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="Player.h" />

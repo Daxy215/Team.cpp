@@ -23,7 +23,7 @@ public:
 		updatePhysics();
 	}
 
-	virtual void processInput(gef::SonyController* controller, gef::Keyboard* keyboard) {  }
+	virtual void processInput(gef::InputManager* input_manager_) {  }
 	virtual void createMesh() {
 		gef::Vector4 size = (*scale_) * 0.5f;
 		set_mesh(builder_.CreateBoxMesh(size));
@@ -41,7 +41,7 @@ public: //Getters / Setters
 	std::string getName() { return name_; }
 	
 	gef::Vector4* getPosition() { return position_; }
-	gef::Vector4* setPosition(gef::Vector4* position_) { this->position_ = position_; }
+	gef::Vector4* setPosition(gef::Vector4* position_) { this->position_ = position_; return position_; }
 
 	gef::Quaternion* getRotation() { return rotation_; }
 	gef::Vector4* getScale() { return scale_; }

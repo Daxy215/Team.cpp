@@ -5,6 +5,7 @@
 #include <graphics/font.h>
 #include <system/debug_log.h>
 #include <graphics/renderer_3d.h>
+#include <input/touch_input_manager.h>
 #include <maths/math_utils.h>
 
 #include <SplashScreen.h>
@@ -38,6 +39,10 @@ void SceneApp::Init() {
 
 	input_manager_ = gef::InputManager::Create(platform_);
 	audio_manager_ = gef::AudioManager::Create();
+	
+	// make sure if there is a panel to detect touch input, then activate it
+	if (input_manager_ && input_manager_->touch_manager() && (input_manager_->touch_manager()->max_num_panels() > 0))
+		input_manager_->touch_manager()->EnablePanel(0);
 
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
@@ -134,11 +139,6 @@ bool SceneApp::Update(float frame_time) {
 			if (!entityA || !entityB)
 				continue;
 
-			
-
-			gef::DebugOut("collding? ");
-			gef::DebugOut(entityA->getName().c_str());
-
 			//Check if entityA is a player.
 			if (isInstance(entityA, Player)) {
 				Player* player = dynamic_cast<Player*>(entityA);
@@ -171,7 +171,7 @@ void SceneApp::Render() {
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(0.0f, 2.0f, 25.0f);
+	gef::Vector4 camera_eye(0.0f, 2.0f, 75.0f);
 	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;

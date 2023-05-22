@@ -12,7 +12,8 @@ void SplashScreen::onUnLoad()
 
 void SplashScreen::update()
 {
-	if(keyboard.is_button_down())
+	//if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_SPACE)) {
+
 }
 
 void SplashScreen::render()

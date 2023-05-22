@@ -39,7 +39,7 @@ void SceneApp::Init() {
 
 	input_manager_ = gef::InputManager::Create(platform_);
 	audio_manager_ = gef::AudioManager::Create();
-	
+
 	// make sure if there is a panel to detect touch input, then activate it
 	if (input_manager_ && input_manager_->touch_manager() && (input_manager_->touch_manager()->max_num_panels() > 0))
 		input_manager_->touch_manager()->EnablePanel(0);
@@ -68,7 +68,7 @@ void SceneApp::Init() {
 	SetupLights();
 
 	//Create scenes
-	SceneManager::addScene(new SplashScreen("SplashScreen"));
+	SceneManager::addScene(new SplashScreen("SplashScreen", input_manager_));
 	SceneManager::addScene(new MainMenu("MainMenu"));
 	SceneManager::addScene(new Options("OptionsMenu", platform_));
 	SceneManager::addScene(new SceneA("Credits"));
@@ -105,6 +105,8 @@ void SceneApp::CleanUp() {
 
 bool SceneApp::Update(float frame_time) {
 	fps_ = 1.0f / frame_time;
+
+	//gef::DebugOut("yo: %F %F ", platform_.width(), platform_.height());
 
 	float time_step = 1.0f / 60.0f;
 	int32 velecoity_iterations = 6;

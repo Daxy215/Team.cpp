@@ -3,18 +3,22 @@
 
 #include <SceneA.h>
 
+#include <input/keyboard.h>
+#include <input/sony_controller_input_manager.h>
+#include <input/input_manager.h>
+
 #include <string>
 
 class SplashScreen : public SceneA {
 public:
-	SplashScreen(std::string name) : SceneA(name) {}
+	SplashScreen(std::string name, gef::InputManager* input_manager_) : SceneA(name) {}
 
 	virtual void onLoad();
 	virtual void onUnLoad();
 	virtual void update();
 	virtual void render();
-
-	gef::TouchInputManager& keyboard;
+public:
+	gef::InputManager* input_manager_
 };
 
 #endif // !SPLASHSCREEN_H

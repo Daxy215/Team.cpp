@@ -11,8 +11,6 @@
 
 //#include <Windows.h>
 
-#define PI 3.1415926
-
 class Player : public Entity {
 public:
 	Player(std::string name_, PrimitiveBuilder& builder_, b2World& world_, gef::Vector4* position_, gef::Quaternion* rotation_, 
@@ -27,18 +25,12 @@ public:
 public:
 	void damage(int amount);// { OutputDebugStringA("Player damaged!"); }
 	void heal(int amount);
-
-	//Stolen from my game engine
-	float positionToAngle(gef::Vector2 lookAtPos, gef::Vector2 pos) {
-		float angle = (float)atan2(lookAtPos.y - pos.y, lookAtPos.x - pos.x);
-		//angle = gef::RadToDeg(angle);
-
-		return angle;
-	}
 private:
 	float speed = 5;
 	int health = 10;
 	int maxhealth = 15;
+
+	float gunAngle = 0;
 };
 #endif
 

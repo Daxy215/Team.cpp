@@ -7,43 +7,21 @@
 
 #include <Windows.h>
 
-// Object rotation variables
-float rotationAngle = 0.0f;
-float previousMouseX = 0.0f;
-
 void Player::update() {
 	updatePhysics();
 }
 
 void Player::processInput(gef::InputManager* input_manager_) {
-	//TODO: Remove all this code once you want to create the game mechanic.
-	/*if (keyboard->IsKeyDown(keyboard->KC_D)) {
-		b2Vec2 force(speed, 0);
-		body_->ApplyForceToCenter(force, true);
+	if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_LEFT)) {
+		gunAngle += 0.05f;
+	} else if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_RIGHT)) {
+		gunAngle -= 0.05f;
 	}
 
-	if (keyboard->IsKeyDown(keyboard->KC_A)) {
-		b2Vec2 force(-speed, 0);
+	//Shoot
+	if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_SPACE)) {
 
-		body_->ApplyForceToCenter(force, true);
-	}*/
-
-	auto mousePos = input_manager_->touch_manager()->mouse_position();
-
-	// Calculate the difference in mouse position
-	float deltaX = mousePos.x - previousMouseX;
-
-	// Update the rotation angle based on the mouse movement
-	rotationAngle += deltaX * 0.01f;
-
-	// Update the previous mouse position
-	previousMouseX = mousePos.x;
-
-	float lookAt = positionToAngle(mousePos, gef::Vector2(getPosition()->x(), getPosition()->y()));
-
-	rotation_->z = rotationAngle;
-
-	gef::DebugOut("lookat: %F - %F \n", mousePos.x, mousePos.y);
+	}
 }
 
 void Player::createMesh() {
@@ -71,3 +49,4 @@ void Player::heal(int healing) {
 			}
 		}
 	}
+}

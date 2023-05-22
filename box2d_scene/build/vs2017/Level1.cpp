@@ -21,7 +21,7 @@ void Level1::onLoad() {
 	b2BodyDef body_def;
 	body_def.type = b2_dynamicBody;
 	body_def.position = b2Vec2(player->getPosition()->x(), player->getPosition()->y());
-	body_def.fixedRotation = true;
+	//body_def.fixedRotation = true;
 
 	player->init(body_def);
 

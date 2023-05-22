@@ -53,6 +53,21 @@ void Player::createMesh() {
 	
 }
 
-void Player::damage() {
+void Player::damage(int damage) {
 
+	health = health - damage;
+	if (health >= 0) {
+		//dies (dont know if this goes here)
+	}
 }
+
+void Player::heal(int healing) {
+	if (health < maxhealth) {
+		for (int i = 0; i < healing; i++)
+		{
+			health = health++;
+			if (health = maxhealth) {
+				return;
+			}
+		}
+	}

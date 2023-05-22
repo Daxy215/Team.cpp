@@ -25,7 +25,8 @@ public:
 	virtual void processInput(gef::InputManager* input_manager_);
 	virtual void createMesh();
 public:
-	void damage();// { OutputDebugStringA("Player damaged!"); }
+	void damage(int amount);// { OutputDebugStringA("Player damaged!"); }
+	void heal(int amount);
 
 	//Stolen from my game engine
 	float positionToAngle(gef::Vector2 lookAtPos, gef::Vector2 pos) {
@@ -36,7 +37,8 @@ public:
 	}
 private:
 	float speed = 5;
-
+	int health = 10;
+	int maxhealth = 15;
 };
 #endif
 

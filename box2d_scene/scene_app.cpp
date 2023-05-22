@@ -143,13 +143,13 @@ bool SceneApp::Update(float frame_time) {
 			if (isInstance(entityA, Player)) {
 				Player* player = dynamic_cast<Player*>(entityA);
 
-				player->damage();
+				player->damage(0);
 			}
 			
 			if (isInstance(entityB, Player)) {
 				Player* player = dynamic_cast<Player*>(entityB);
 
-				player->damage();
+				player->damage(0);
 			}
 		}
 

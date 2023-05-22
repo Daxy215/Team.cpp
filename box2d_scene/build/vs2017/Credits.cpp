@@ -2,6 +2,7 @@
 
 void Credits::onLoad()
 {
+
 }
 
 void Credits::onUnLoad()

@@ -13,6 +13,8 @@ public:
 	virtual void onUnLoad();
 	virtual void update();
 	virtual void render();
+
+	gef::TouchInputManager& keyboard;
 };
 
 #endif // !SPLASHSCREEN_H

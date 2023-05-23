@@ -34,10 +34,13 @@ public:
 public:
 	void damage(int amount);// { OutputDebugStringA("Player damaged!"); }
 	void heal(int amount);
+
+	void addScore(int amount) { score += amount; }
 private:
 	float speed = 5;
-	int health = 10;
-	int maxhealth = 15;
+
+	int health = 10, maxhealth = 15;
+	int score = 0;
 
 	int shootIndex = 0;
 

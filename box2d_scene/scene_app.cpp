@@ -10,6 +10,7 @@
 #include <graphics/scene.h>
 #include <animation/skeleton.h>
 #include <animation/animation.h>
+#include <graphics/image_data.h>
 
 #include <SplashScreen.h>
 #include <MainMenu.h>
@@ -62,12 +63,12 @@ void SceneApp::Init() {
 
 	//To load a texture
 	/*gef::PNGLoader png_loader;
-	gef::ImageData* imageData;
+	gef::ImageData imageData;
 
-	png_loader.Load("imagePath", platform_, *imageData);
+	png_loader.Load("imagePath", platform_, imageData);
 
 	if (imageData != nullptr) {
-		gef::Texture* texture = gef::Texture::Create(platform_, *imageData);
+		gef::Texture* texture = gef::Texture::Create(platform_, imageData);
 	}*/
 
 	InitFont();
@@ -104,13 +105,13 @@ void SceneApp::Init() {
 
 	//Create scenes
 	SceneManager::addScene(new SplashScreen("SplashScreen", input_manager_));
-	SceneManager::addScene(new MainMenu("MainMenu"));
-	SceneManager::addScene(new Options("OptionsMenu", platform_));
+	SceneManager::addScene(new MainMenu("MainMenu", input_manager_));
+	SceneManager::addScene(new Options("Options", platform_));
 	SceneManager::addScene(new SceneA("Credits"));
 
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));
 
-	SceneManager::loadScene(SceneManager::scenes[4]); //Change it to '0' later.
+	SceneManager::loadScene(SceneManager::scenes[0]); //Change it to '0' later.
 }
 
 void SceneApp::CleanUp() {
@@ -140,8 +141,8 @@ void SceneApp::CleanUp() {
 
 bool SceneApp::Update(float frame_time) {
 	fps_ = 1.0f / frame_time;
-
-	//gef::DebugOut("yo: %F %F ", platform_.width(), platform_.height());
+	
+	mousePos = input_manager_->touch_manager()->mouse_position();
 
 	float time_step = 1.0f / 60.0f;
 	int32 velecoity_iterations = 6;
@@ -261,7 +262,6 @@ void SceneApp::Render() {
 	}
 
 	DrawHUD();
-
 
 	sprite_renderer_->End();
 }

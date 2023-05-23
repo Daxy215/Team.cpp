@@ -4,7 +4,6 @@
 #include <SceneA.h>
 
 #include <input/keyboard.h>
-#include <input/sony_controller_input_manager.h>
 #include <input/input_manager.h>
 
 #include <string>

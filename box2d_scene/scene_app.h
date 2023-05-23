@@ -42,7 +42,11 @@ public:
 	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 	gef::Mesh* GetFirstMesh(gef::Scene* scene);
 public:
+	gef::SpriteRenderer* getSpriteRenderer() { return sprite_renderer_; }
+public:
 	static SceneApp* instance;
+	
+	gef::Vector2 mousePos;
 private:
 	void InitFont();
 	void CleanUpFont();

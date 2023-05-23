@@ -15,6 +15,7 @@
 #include <SplashScreen.h>
 #include <MainMenu.h>
 #include <Options.h>
+#include <Credits.h>
 #include <Level1.h>
 
 //Checks if a class is instance of. For example, "Player" can be,
@@ -107,7 +108,7 @@ void SceneApp::Init() {
 	SceneManager::addScene(new SplashScreen("SplashScreen", input_manager_));
 	SceneManager::addScene(new MainMenu("MainMenu", input_manager_));
 	SceneManager::addScene(new Options("Options", platform_));
-	SceneManager::addScene(new SceneA("Credits"));
+	SceneManager::addScene(new Credits("Credits"));
 
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));
 

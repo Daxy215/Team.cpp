@@ -12,6 +12,9 @@ public:
 	virtual void onUnLoad();
 	virtual void update();
 	virtual void render();
+	virtual void drawHUD(gef::SpriteRenderer* sprite_renderer_, gef::Font* font_);
+private:
+	float y = 0;
 };
 
 #endif // !CREDITS_H

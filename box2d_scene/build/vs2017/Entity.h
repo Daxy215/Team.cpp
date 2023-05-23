@@ -6,6 +6,7 @@
 #include <maths/vector2.h>
 #include "primitive_builder.h"
 #include <graphics/mesh_instance.h>
+#include <maths/quaternion.h>
 #include <box2d/box2d.h>
 
 #include <input/keyboard.h>
@@ -30,12 +31,34 @@ public:
 	virtual void render(gef::Renderer3D* renderer_3d_) { }
 
 	virtual void processInput(gef::InputManager* input_manager_) {  }
+	
 	virtual void createMesh() {
 		gef::Vector4 size = (*scale_) * 0.5f;
 		set_mesh(builder_.CreateBoxMesh(size));
 	}
 
-	void updatePhysics();
+	virtual void updatePhysics() {
+		if(body_ != nullptr)
+			setPosition(new gef::Vector4(body_->GetPosition().x, body_->GetPosition().y, 0));
+
+		gef::Matrix44 player_transform;
+		player_transform.SetIdentity();
+
+		gef::Matrix44 rotationZ;
+		rotationZ.SetIdentity();
+		rotationZ.RotationZ(rotation_->z);
+
+		gef::Matrix44 scale;
+		scale.SetIdentity();
+		scale.Scale(*getScale());
+
+		gef::Matrix44 player_translation;
+		player_translation.SetIdentity();
+		player_translation.SetTranslation(*position_);
+
+		player_transform = rotationZ * scale * player_translation;
+		set_transform(player_transform);
+	}
 
 	gef::Matrix44 getTransform() { return transform_; }
 public:
@@ -50,6 +73,7 @@ public: //Getters / Setters
 	gef::Vector4* setPosition(gef::Vector4* position_) { this->position_ = position_; return position_; }
 
 	gef::Quaternion* getRotation() { return rotation_; }
+	gef::Quaternion* setRotation(gef::Quaternion* rotation_) { this->rotation_ = rotation_; }
 	gef::Vector4* getScale() { return scale_; }
 	gef::Vector4* setScale(gef::Vector4* scale_) { this->scale_ = scale_; return scale_; }
 

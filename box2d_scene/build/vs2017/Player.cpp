@@ -34,6 +34,8 @@ void Player::initA() {
 
 		bulletPool[i] = entity;
 	}
+
+	gun = new Gun("Gun", builder_, world_, new gef::Vector4(0, 2, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 }
 
 void Player::update() {
@@ -47,6 +49,9 @@ void Player::update() {
 }
 
 void Player::render(gef::Renderer3D* renderer_3d_) {
+	const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(gun);
+	renderer_3d_->DrawMesh(*mesh);
+
 	for (int i = 0; i < poolSize; i++) {
 		if (bulletPool[i]->active) {
 			Entity* entity = bulletPool[i];
@@ -63,6 +68,9 @@ void Player::processInput(gef::InputManager* input_manager_) {
 	} else if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_RIGHT)) {
 		gunAngle -= 0.05f;
 	}
+
+	//gun->getRotation()->z = gunAngle;
+	rotation_->z = gunAngle;
 
 	//Shoot
 	if (input_manager_->keyboard()->IsKeyDown(input_manager_->keyboard()->KC_SPACE)) {

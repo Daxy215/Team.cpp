@@ -5,14 +5,13 @@
 #include <iostream>
 #include <string>
 #include <math.h>
-#include <maths/math_utils.h>
 #include <graphics/renderer_3d.h>
+
+#include "Gun.h"
 
 #include <Entity.h>
 
 #define poolSize 8
-
-//#include <Windows.h>
 
 namespace gef {
 	class Renderer3D;
@@ -32,7 +31,7 @@ public:
 	virtual void processInput(gef::InputManager* input_manager_);
 	virtual void createMesh();
 public:
-	void damage(int amount);// { OutputDebugStringA("Player damaged!"); }
+	void damage(int amount);
 	void heal(int amount);
 
 	void addScore(int amount) { score += amount; }
@@ -47,6 +46,7 @@ private:
 	float gunAngle = 0;
 	float shootingTimer = 0;
 
+	Gun* gun;
 	Entity* bulletPool[poolSize];
 };
 #endif

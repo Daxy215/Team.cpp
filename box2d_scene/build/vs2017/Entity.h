@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <system/debug_log.h>
+
 #include <maths/vector2.h>
 #include "primitive_builder.h"
 #include <graphics/mesh_instance.h>
@@ -66,6 +68,15 @@ public:
 	void init(b2BodyDef body_def);
 	void init(b2FixtureDef fixture_, b2BodyType bodyType_);
 	void init(b2BodyDef body_def, b2FixtureDef fixture_);
+
+	void destroy() {
+		gef::DebugOut("destroying %s", name_.c_str());
+
+		active = false;
+		world_.DestroyBody(body_);
+
+		body_ = nullptr;
+	}
 public: //Getters / Setters
 	std::string getName() { return name_; }
 	

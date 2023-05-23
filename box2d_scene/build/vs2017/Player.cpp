@@ -6,6 +6,8 @@
 #include <maths/quaternion.h>
 #include "box2d/box2d.h"
 
+#include <scene_app.h>
+
 #include <Windows.h>
 
 void Player::initA() {
@@ -26,7 +28,7 @@ void Player::initA() {
 	//body_def.fixedRotation = true;
 
 	for (int i = 0; i < poolSize; i++) {
-		Entity* entity = new Entity("Bullets", builder_, world_, new gef::Vector4(0, 0, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+		Entity* entity = new Entity("Bullet", builder_, world_, new gef::Vector4(0, 0, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
 		entity->init(body_def);
 
 		entity->active = false;
@@ -35,11 +37,48 @@ void Player::initA() {
 		bulletPool[i] = entity;
 	}
 
-	gun = new Gun("Gun", builder_, world_, new gef::Vector4(0, 2, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+	// if there is mesh data in the scene, create a mesh to draw from the first mesh
+	mesh_ = SceneApp::instance->GetFirstMesh();
+
+	// get the first skeleton in the scene
+	gef::Skeleton* skeleton = SceneApp::instance->GetFirstSkeleton();
+
+	if (skeleton) {
+		player_ = new gef::SkinnedMeshInstance(*skeleton);
+		anim_player_.Init(player_->bind_pose());
+		player_->set_mesh(mesh_);
+	}
+	
+	// anims
+	walk_anim_ = SceneApp::instance->LoadAnimation("tesla/tesla@walk.scn", "");
+
+	if (walk_anim_) {
+		anim_player_.set_clip(walk_anim_);
+		anim_player_.set_looping(true);
+		anim_player_.set_anim_time(0.0f);
+	}
 }
 
 void Player::update() {
 	updatePhysics();
+
+	if (player_) {
+		// update the pose in the anim player from the animation
+		anim_player_.Update(0.05f, player_->bind_pose());
+
+		// update the bone matrices that are used for rendering the character
+		// from the newly updated pose in the anim player
+		player_->UpdateBoneMatrices(anim_player_.pose());
+	}
+	
+	// build a transformation matrix that will position the character
+	// use this to move the player around, scale it, etc.
+	if (player_) {
+		gef::Matrix44 player_transform;
+		player_transform.SetIdentity();
+	
+		player_->set_transform(player_transform);
+	}
 
 	for (int i = 0; i < poolSize; i++) {
 		if (bulletPool[i]->active) {
@@ -49,8 +88,7 @@ void Player::update() {
 }
 
 void Player::render(gef::Renderer3D* renderer_3d_) {
-	const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(gun);
-	renderer_3d_->DrawMesh(*mesh);
+	renderer_3d_->DrawSkinnedMesh(*player_, player_->bone_matrices());
 
 	for (int i = 0; i < poolSize; i++) {
 		if (bulletPool[i]->active) {

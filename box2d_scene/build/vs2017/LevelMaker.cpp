@@ -6,6 +6,8 @@
 #include <maths/vector4.h>
 #include <maths/quaternion.h>
 
+#include "Enemy.h"
+
 std::vector<Entity*> LevelMaker::createLevel(int startX, int startY, int level[LevelSizeX][LevelSizeY], PrimitiveBuilder* primitive_builder, b2World* world_) {
     std::vector<Entity*> entities;
 
@@ -23,6 +25,11 @@ std::vector<Entity*> LevelMaker::createLevel(int startX, int startY, int level[L
             if (block == 1) {
                 Entity* entity = new Entity("Level Bricks", * primitive_builder, *world_, new gef::Vector4(i + startX, j + startY, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
                 entity->init(player_fixture_def, b2_staticBody);
+
+                entities.push_back(entity);
+            } else if (block == 2) {
+                Enemy* entity = new Enemy("Enemy", *primitive_builder, *world_, new gef::Vector4(i + startX, j + startY, 0, 2), new gef::Quaternion(0, 0, 0, 1), new gef::Vector4(1, 1, 1, 1));
+                entity->init(player_fixture_def, b2_kinematicBody);
 
                 entities.push_back(entity);
             }

@@ -6,8 +6,8 @@
 #include <string>
 #include <math.h>
 #include <graphics/renderer_3d.h>
-
-#include "Gun.h"
+#include <graphics/skinned_mesh_instance.h>
+#include "MotionClipPlayer.h"
 
 #include <Entity.h>
 
@@ -36,6 +36,11 @@ public:
 
 	void addScore(int amount) { score += amount; }
 private:
+	gef::SkinnedMeshInstance* player_;
+
+	MotionClipPlayer anim_player_;
+	gef::Animation* walk_anim_;
+private:
 	float speed = 5;
 
 	int health = 10, maxhealth = 15;
@@ -46,7 +51,6 @@ private:
 	float gunAngle = 0;
 	float shootingTimer = 0;
 
-	Gun* gun;
 	Entity* bulletPool[poolSize];
 };
 #endif

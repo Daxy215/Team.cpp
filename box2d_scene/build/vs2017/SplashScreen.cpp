@@ -1,6 +1,8 @@
 #include "SplashScreen.h"
 #include <input/touch_input_manager.h>
 
+#include <system/debug_log.h>
+
 #include <SceneManager.h>
 
 void SplashScreen::onLoad()

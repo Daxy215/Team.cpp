@@ -87,7 +87,7 @@ void SceneApp::Init() {
 
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));
 
-	SceneManager::loadScene(SceneManager::scenes[4]); //Change it to '0' later.
+	SceneManager::loadScene(SceneManager::scenes[0]); //Change it to '0' later.
 
 	enemyDeathSound = audio_manager_->LoadSample("audio/death.wav", platform_);
 }
@@ -130,6 +130,10 @@ bool SceneApp::Update(float frame_time) {
 	
 	world_->Step(time_step, velecoity_iterations, position_iterations);
 	
+	if (SceneManager::currentActiveScene != nullptr) {
+		SceneManager::currentActiveScene->update();
+	}
+
 	//Collision detection
 	// get the head of the contact list
 	b2Contact* contact = world_->GetContactList();
@@ -201,10 +205,6 @@ bool SceneApp::Update(float frame_time) {
 
 		// Get next contact point
 		contact = contact->GetNext();
-	}
-
-	if (SceneManager::currentActiveScene != nullptr) {
-		SceneManager::currentActiveScene->update();
 	}
 
 	return true;

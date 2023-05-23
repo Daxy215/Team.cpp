@@ -79,6 +79,9 @@ void Level1::onLoad() {
 
 void Level1::update() {
 	for (auto it = entities.begin(); it != entities.end(); it++) {
+		if (!(*it)->active)
+			continue;
+
 		(*it)->update();
 		(*it)->processInput(input_manager_);
 	}

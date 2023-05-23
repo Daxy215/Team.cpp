@@ -88,6 +88,8 @@ void SceneApp::Init() {
 	SceneManager::addScene(new Level1("Level 1", renderer_3d_, primitive_builder_, world_, input_manager_));
 
 	SceneManager::loadScene(SceneManager::scenes[4]); //Change it to '0' later.
+
+	enemyDeathSound = audio_manager_->LoadSample("audio/death.wav", platform_);
 }
 
 void SceneApp::CleanUp() {
@@ -152,12 +154,14 @@ bool SceneApp::Update(float frame_time) {
 			if (!entityA || !entityB)
 				continue;
 
-			//Check if entityA is a player.
+			//Check for player and enemy collision
 			if (isInstance(entityA, Player) && isInstance(entityB, Enemy)) {
 				Player* player = dynamic_cast<Player*>(entityA);
 
-				player->damage(0);
+				player->damage(1);
 				entityB->destroy();
+
+				score--;
 
 				return true;
 			}
@@ -165,8 +169,31 @@ bool SceneApp::Update(float frame_time) {
 			if (isInstance(entityB, Player) && isInstance(entityA, Enemy)) {
 				Player* player = dynamic_cast<Player*>(entityB);
 
-				player->damage(0);
+				player->damage(1);
 				entityA->destroy();
+
+				score--;
+
+				return true;
+			}
+
+			//Check for bullet and enemy collision
+			if (entityA->getName() == "Bullet" && isInstance(entityB, Enemy)) {
+				entityB->destroy();
+
+				score++;
+
+				audio_manager_->PlaySample(enemyDeathSound);
+
+				return true;
+			}
+
+			if (entityB->getName() == "Bullet" && isInstance(entityA, Enemy)) {
+				entityA->destroy();
+
+				score++;
+
+				audio_manager_->PlaySample(enemyDeathSound);
 
 				return true;
 			}
@@ -246,6 +273,8 @@ void SceneApp::DrawHUD()
 	{
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
+
+		font_->RenderText(sprite_renderer_, gef::Vector4(150.0f, 50.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "SCORE: %i", score);
 	}
 }
 

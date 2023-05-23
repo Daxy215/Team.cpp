@@ -41,6 +41,7 @@ public:
 	gef::Mesh* GetFirstMesh();
 public:
 	gef::SpriteRenderer* getSpriteRenderer() { return sprite_renderer_; }
+	gef::AudioManager* getAudioManager() { return audio_manager_; }
 public:
 	static SceneApp* instance;
 	
@@ -60,11 +61,13 @@ private:
 	PrimitiveBuilder* primitive_builder_;
 	
 	gef::Scene* scene_assets_;
-
 	
 	b2World* world_;
 
+	int score = 0;
 	float fps_;
+
+	int32 enemyDeathSound, playerDamaged;
 };
 
 #endif // _SCENE_APP_H

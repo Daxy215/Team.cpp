@@ -57,6 +57,8 @@ void Player::initA() {
 		anim_player_.set_looping(true);
 		anim_player_.set_anim_time(0.0f);
 	}
+
+	shutgonSound = SceneApp::instance->getAudioManager()->LoadSample("audio/shotgun.wav", SceneApp::instance->platform());
 }
 
 void Player::update() {
@@ -115,6 +117,8 @@ void Player::processInput(gef::InputManager* input_manager_) {
 		if (shootingTimer > 2) {
 			shootingTimer = 0;
 
+			SceneApp::instance->getAudioManager()->PlaySample(shutgonSound);
+
 			bulletPool[shootIndex]->active = true;
 			bulletPool[shootIndex]->getBody()->SetTransform(b2Vec2(position_->x(), position_->y()), gunAngle);
 
@@ -143,13 +147,9 @@ void Player::createMesh() {
 }
 
 void Player::damage(int damage) {
-	health = health - damage;
-
-	if (health >= 0) {
-		//dies (dont know if this goes here)
+	health -= damage;
+	
+	if (health <= 0) {
+		destroy();
 	}
-}
-
-void Player::heal(int healing) {
-	health = min(maxhealth, health + healing);
 }

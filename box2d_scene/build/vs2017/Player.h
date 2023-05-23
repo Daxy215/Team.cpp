@@ -32,9 +32,6 @@ public:
 	virtual void createMesh();
 public:
 	void damage(int amount);
-	void heal(int amount);
-
-	void addScore(int amount) { score += amount; }
 private:
 	gef::SkinnedMeshInstance* player_;
 
@@ -44,12 +41,13 @@ private:
 	float speed = 5;
 
 	int health = 10, maxhealth = 15;
-	int score = 0;
-
+	
 	int shootIndex = 0;
 
 	float gunAngle = 0;
 	float shootingTimer = 0;
+
+	int32 shutgonSound;
 
 	Entity* bulletPool[poolSize];
 };

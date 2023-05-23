@@ -17,8 +17,12 @@ public:
 	virtual void onUnLoad();
 	virtual void update();
 	virtual void render();
+	virtual void drawHUD(gef::SpriteRenderer* sprite_renderer_, gef::Font* font_);
+
 public:
-	gef::InputManager* input_manager_
+	float timer = 0;
+public:
+	gef::InputManager* input_manager_;
 };
 
 #endif // !SPLASHSCREEN_H

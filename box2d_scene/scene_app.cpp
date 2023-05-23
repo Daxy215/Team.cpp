@@ -7,6 +7,9 @@
 #include <graphics/renderer_3d.h>
 #include <input/touch_input_manager.h>
 #include <maths/math_utils.h>
+#include <graphics/scene.h>
+#include <animation/skeleton.h>
+#include <animation/animation.h>
 
 #include <SplashScreen.h>
 #include <MainMenu.h>
@@ -27,7 +30,11 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	input_manager_(NULL),
-	audio_manager_(NULL) {
+	audio_manager_(NULL),
+	scene_assets_(NULL),
+	walk_anim_(NULL),
+	mesh_(NULL),
+	player_(NULL) {
 	
 	
 }
@@ -36,7 +43,6 @@ void SceneApp::Init() {
 	instance = this;
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
-
 	input_manager_ = gef::InputManager::Create(platform_);
 	audio_manager_ = gef::AudioManager::Create();
 
@@ -66,6 +72,35 @@ void SceneApp::Init() {
 
 	InitFont();
 	SetupLights();
+
+	scene_assets_ = new gef::Scene();
+	scene_assets_->ReadSceneFromFile(platform_, "tesla/tesla.scn");
+
+	scene_assets_->CreateMaterials(platform_);
+
+	// if there is mesh data in the scene, create a mesh to draw from the first mesh
+	mesh_ = GetFirstMesh(scene_assets_);
+
+	// get the first skeleton in the scene
+	gef::Skeleton* skeleton = GetFirstSkeleton(scene_assets_);
+
+	if (skeleton)
+	{
+		player_ = new gef::SkinnedMeshInstance(*skeleton);
+		anim_player_.Init(player_->bind_pose());
+		player_->set_mesh(mesh_);
+	}
+
+
+	// anims
+	walk_anim_ = LoadAnimation("tesla/tesla@walk.scn", "");
+
+	if (walk_anim_)
+	{
+		anim_player_.set_clip(walk_anim_);
+		anim_player_.set_looping(true);
+		anim_player_.set_anim_time(0.0f);
+	}
 
 	//Create scenes
 	SceneManager::addScene(new SplashScreen("SplashScreen", input_manager_));
@@ -118,6 +153,25 @@ bool SceneApp::Update(float frame_time) {
 	
 	if (SceneManager::currentActiveScene != nullptr) {
 		SceneManager::currentActiveScene->update();
+	}
+
+	if (player_)
+	{
+		// update the pose in the anim player from the animation
+		//anim_player_.Update(frame_time, player_->bind_pose());
+
+		// update the bone matrices that are used for rendering the character
+		// from the newly updated pose in the anim player
+		player_->UpdateBoneMatrices(anim_player_.pose());
+	}
+
+	// build a transformation matrix that will position the character
+	// use this to move the player around, scale it, etc.
+	if (player_)
+	{
+		gef::Matrix44 player_transform;
+		player_transform.SetIdentity();
+		player_->set_transform(player_transform);
 	}
 
 	//Collision detection
@@ -194,13 +248,24 @@ void SceneApp::Render() {
 		SceneManager::currentActiveScene->render();
 	}
 
+	// draw the player, the pose is defined by the bone matrices
+	if (player_)
+		renderer_3d_->DrawSkinnedMesh(*player_, player_->bone_matrices());
+
 	renderer_3d_->End();
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
+	if (SceneManager::currentActiveScene != nullptr) {
+		SceneManager::currentActiveScene->drawHUD(sprite_renderer_, font_);
+	}
+
 	DrawHUD();
+
+
 	sprite_renderer_->End();
 }
+
 void SceneApp::InitFont()
 {
 	font_ = new gef::Font(platform_);
@@ -261,6 +326,57 @@ gef::Mesh* SceneApp::GetMeshFromSceneAssets(gef::Scene* scene) {
 	// return the first mesh
 	if (scene && scene->meshes.size() > 0)
 		mesh = scene->meshes.front();
+
+	return mesh;
+}
+
+gef::Animation* SceneApp::LoadAnimation(const char* anim_scene_filename, const char* anim_name)
+{
+	gef::Animation* anim = NULL;
+
+	gef::Scene anim_scene;
+	if (anim_scene.ReadSceneFromFile(platform_, anim_scene_filename))
+	{
+		// if the animation name is specified then try and find the named anim
+		// otherwise return the first animation if there is one
+		std::map<gef::StringId, gef::Animation*>::const_iterator anim_node_iter;
+		if (anim_name)
+			anim_node_iter = anim_scene.animations.find(gef::GetStringId(anim_name));
+		else
+			anim_node_iter = anim_scene.animations.begin();
+
+		if (anim_node_iter != anim_scene.animations.end())
+			anim = new gef::Animation(*anim_node_iter->second);
+	}
+
+	return anim;
+}
+
+gef::Skeleton* SceneApp::GetFirstSkeleton(gef::Scene* scene)
+{
+	gef::Skeleton* skeleton = NULL;
+	if (scene)
+	{
+		// check to see if there is a skeleton in the the scene file
+		// if so, pull out the bind pose and create an array of matrices
+		// that wil be used to store the bone transformations
+		if (scene->skeletons.size() > 0)
+			skeleton = scene->skeletons.front();
+	}
+
+	return skeleton;
+}
+
+gef::Mesh* SceneApp::GetFirstMesh(gef::Scene* scene)
+{
+	gef::Mesh* mesh = NULL;
+
+	if (scene)
+	{
+		// now check to see if there is any mesh data in the file, if so lets create a mesh from it
+		if (scene->mesh_data.size() > 0)
+			mesh = scene_assets_->CreateMesh(platform_, scene->mesh_data.front());
+	}
 
 	return mesh;
 }

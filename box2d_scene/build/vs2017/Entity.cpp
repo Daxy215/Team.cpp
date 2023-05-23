@@ -85,10 +85,14 @@ void Entity::updatePhysics() {
 	rotationZ.SetIdentity();
 	rotationZ.RotationZ(rotation_->z);
 
+	gef::Matrix44 scale;
+	scale.SetIdentity();
+	scale.Scale(*getScale());
+
 	gef::Matrix44 player_translation;
 	player_translation.SetIdentity();
 	player_translation.SetTranslation(*position_);
 
-	player_transform = rotationZ * player_translation;
+	player_transform = rotationZ * scale * player_translation;
 	set_transform(player_transform);
 }

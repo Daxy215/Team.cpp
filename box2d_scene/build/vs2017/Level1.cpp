@@ -2,6 +2,7 @@
 
 #include <box2d/box2d.h>
 #include <maths/quaternion.h>
+#include <graphics/renderer_3d.h>
 
 #include <system/debug_log.h>
 
@@ -86,6 +87,9 @@ void Level1::update() {
 void Level1::render() {
 	for (auto it = entities.begin(); it != entities.end(); it++) {
 		Entity* entity = (*it);
+
+		entity->render(renderer_3d_);
+
 		const gef::MeshInstance* mesh = static_cast<gef::MeshInstance*>(entity);
 		renderer_3d_->DrawMesh(*mesh);
 	}

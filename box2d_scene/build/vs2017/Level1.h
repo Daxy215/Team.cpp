@@ -4,10 +4,13 @@
 #include <SceneA.h>
 
 #include <string>
-#include <graphics/renderer_3d.h>
 //#include <graphics/mesh_instance.h>
 
 #include <Player.h>
+
+namespace gef {
+	class Renderer3D;
+}
 
 class Level1 : public SceneA {
 public:

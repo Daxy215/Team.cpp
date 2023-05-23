@@ -8,6 +8,8 @@
 #include <box2d/box2d.h>
 #include "graphics/scene.h"
 #include <audio/audio_manager.h>
+#include <graphics/skinned_mesh_instance.h>
+#include "MotionClipPlayer.h"
 
 #include <vector>
 
@@ -22,6 +24,7 @@ namespace gef
 	class Font;
 	class InputManager;
 	class Renderer3D;
+	class Skeleton;
 }
 
 class SceneApp : public gef::Application
@@ -35,6 +38,9 @@ public:
 
 	gef::Scene* LoadSceneAssets(const char* filename);
 	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
+	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name);
+	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
+	gef::Mesh* GetFirstMesh(gef::Scene* scene);
 public:
 	static SceneApp* instance;
 private:
@@ -51,7 +57,13 @@ private:
 
 	PrimitiveBuilder* primitive_builder_;
 
+	class gef::Mesh* mesh_;
+	gef::SkinnedMeshInstance* player_;
+
 	gef::Scene* scene_assets_;
+
+	MotionClipPlayer anim_player_;
+	gef::Animation* walk_anim_;
 
 	b2World* world_;
 

@@ -12,6 +12,10 @@
 #include <input/sony_controller_input_manager.h>
 #include <input/input_manager.h>
 
+namespace gef {
+	class Renderer3D;
+}
+
 class Entity : public gef::MeshInstance {
 public:
 	Entity(std::string name_, PrimitiveBuilder& builder_, b2World& world_,
@@ -22,6 +26,8 @@ public:
 	virtual void update() {
 		updatePhysics();
 	}
+	
+	virtual void render(gef::Renderer3D* renderer_3d_) { }
 
 	virtual void processInput(gef::InputManager* input_manager_) {  }
 	virtual void createMesh() {
@@ -45,6 +51,11 @@ public: //Getters / Setters
 
 	gef::Quaternion* getRotation() { return rotation_; }
 	gef::Vector4* getScale() { return scale_; }
+	gef::Vector4* setScale(gef::Vector4* scale_) { this->scale_ = scale_; return scale_; }
+
+	b2Body* getBody() { return body_; }
+public:
+	bool active;
 private:
 	void setUserData() { body_->GetUserData().pointer = reinterpret_cast<uintptr_t>(this); }
 protected:
